@@ -6,10 +6,9 @@ def fix_link(link):
 
 r = requests.get('https://api.raporty.pse.pl/api/ogr-oper')
 parsed = r.json()
-
-fixed_link = fix_link(parsed['nextLink'])
-
-for i in range(100):
+# todo - also parse/handle first response
+while 'nextLink' in parsed:
+    fixed_link = fix_link(parsed['nextLink'])
     r = requests.get(fixed_link)
     parsed = r.json()
     dates = [item['from_dtime'] for item in parsed['value']]
@@ -17,4 +16,3 @@ for i in range(100):
     first = dates[0]
     last = dates[-1]
     print(f"from-to: {first} {last}")
-    fixed_link = fix_link(parsed['nextLink'])

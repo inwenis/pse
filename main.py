@@ -13,7 +13,10 @@ def fetch_all(endpoint):
         r = requests.get(fixed_link)
         parsed = r.json()
         print(f'received response with len {len(r.content)}')
+        # here you could dump the received json to a file, or send it to a database
 
+# if necessary not you could automate getting all endpoints from the main page
+# since we have code working for a hardcoded list of endpoints
 endpoints = [
     'https://api.raporty.pse.pl/api/ogr-oper',
     'https://api.raporty.pse.pl/api/ogr-oper-head',
@@ -24,6 +27,8 @@ endpoints = [
     'https://api.raporty.pse.pl/api/unav-pk5l'
 ]
 
+# I know little of parallel/concurency in python so I'm not sure if this is the way to go
+# but it works
 import concurrent.futures
 
 def fetch_and_print(endpoint):

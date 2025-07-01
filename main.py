@@ -24,7 +24,12 @@ endpoints = [
     'https://api.raporty.pse.pl/api/unav-pk5l'
 ]
 
-for endpoint in endpoints:
+import concurrent.futures
+
+def fetch_and_print(endpoint):
     print(f"Fetching data from {endpoint}")
     fetch_all(endpoint)
     print("Done fetching data.")
+
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    executor.map(fetch_and_print, endpoints)

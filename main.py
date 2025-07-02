@@ -41,6 +41,11 @@ def fetch_and_print(url):
     fetch_all(url)
     print("Done fetching data.")
 
+def save_to_file(url, counter, content):
+    endpoint = url.split('/')[-1]
+    with open(f'out2/{endpoint}_{counter}.json', 'w', encoding='utf-8') as f:
+        f.write(content)
+
 with concurrent.futures.ThreadPoolExecutor() as executor:
     results = executor.map(fetch_and_print, urls)
     for url, responses in results:
@@ -48,10 +53,8 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
         # todo - do this with list comprehension
         counter = 0
         with_indices = []
-        for r in responses:
-            with_indices.append(counter, r)
+        for content in responses:
+            with_indices.append(counter, content)
             counter += 1
-        for counter, r in with_indices:
-            endpoint = url.split('/')[-1]
-            with open(f'out2/{endpoint}_{counter}.json', 'w', encoding='utf-8') as f:
-                f.write(r)
+        for counter, content in with_indices:
+            save_to_file(url, counter, content)

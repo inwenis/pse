@@ -1,13 +1,13 @@
 import requests
 import re
 
-def fix_pagination_link(to_fix, endpoint):
-    return re.sub(r'http://.*?\?', f'{endpoint}?', to_fix)
+def fix_pagination_link(to_fix, full_endpoint_url):
+    return re.sub(r'http://.*?\?', f'{full_endpoint_url}?', to_fix)
 
-def fetch_all(endpoint):
+def fetch_all(url):
     all = []
 
-    current_link = endpoint
+    current_link = url
 
     while True:
         response = requests.get(current_link)
@@ -17,12 +17,12 @@ def fetch_all(endpoint):
         if 'nextLink' not in parsed:
             break
         else:
-            current_link = fix_pagination_link(parsed['nextLink'], endpoint)
-    return all
+            current_link = fix_pagination_link(parsed['nextLink'], url)
+    return url, all
 
 # if necessary not you could automate getting all endpoints from the main page
 # since we have code working for a hardcoded list of endpoints
-endpoints = [
+urls = [
     'https://api.raporty.pse.pl/api/ogr-oper',
     'https://api.raporty.pse.pl/api/ogr-oper-head',
     'https://api.raporty.pse.pl/api/it-omb-rbb',
@@ -36,10 +36,22 @@ endpoints = [
 # but it works
 import concurrent.futures
 
-def fetch_and_print(endpoint):
-    print(f"Fetching data from {endpoint}")
-    fetch_all(endpoint)
+def fetch_and_print(url):
+    print(f"Fetching data from {url}")
+    fetch_all(url)
     print("Done fetching data.")
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
-    executor.map(fetch_and_print, endpoints)
+    results = executor.map(fetch_and_print, urls)
+    for url, responses in results:
+        print(f'got {len(responses)} results for {url}')
+        # todo - do this with list comprehension
+        counter = 0
+        with_indices = []
+        for r in responses:
+            with_indices.append(counter, r)
+            counter += 1
+        for counter, r in with_indices:
+            endpoint = url.split('/')[-1]
+            with open(f'out2/{endpoint}_{counter}.json', 'w', encoding='utf-8') as f:
+                f.write(r)

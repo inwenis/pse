@@ -41,6 +41,8 @@ def fetch_all(url):
             break
         else:
             current_link = fix_pagination_link(parsed['nextLink'], url)
+    # todo - fix bug - it seems some urls are never marked as done
+    # i suspect it is because the watcher is not fully thread-safe
     watcher.report_scraped_all(url)
     return url, all
 

@@ -23,12 +23,12 @@ def fetch_all(url):
 # if necessary not you could automate getting all endpoints from the main page
 # since we have code working for a hardcoded list of endpoints
 urls = [
-    'https://api.raporty.pse.pl/api/ogr-oper',
-    'https://api.raporty.pse.pl/api/ogr-oper-head',
-    'https://api.raporty.pse.pl/api/it-omb-rbb',
-    'https://api.raporty.pse.pl/api/price-fcst',
-    'https://api.raporty.pse.pl/api/price-cost',
-    'https://api.raporty.pse.pl/api/pk5l-wp',
+    # 'https://api.raporty.pse.pl/api/ogr-oper',
+    # 'https://api.raporty.pse.pl/api/ogr-oper-head',
+    # 'https://api.raporty.pse.pl/api/it-omb-rbb',
+    # 'https://api.raporty.pse.pl/api/price-fcst',
+    # 'https://api.raporty.pse.pl/api/price-cost',
+    # 'https://api.raporty.pse.pl/api/pk5l-wp',
     'https://api.raporty.pse.pl/api/unav-pk5l'
 ]
 
@@ -44,18 +44,12 @@ def fetch_and_print(url):
 
 def save_to_file(url, counter, content):
     endpoint = url.split('/')[-1]
-    with open(f'out2/{endpoint}_{counter}.json', 'w', encoding='utf-8') as f:
+    with open(f'out/{endpoint}_{counter}.json', 'w', encoding='utf-8') as f:
         f.write(content)
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
     results = executor.map(fetch_and_print, urls)
     for url, responses in results:
         print(f'got {len(responses)} results for {url}')
-        # todo - do this with list comprehension
-        counter = 0
-        with_indices = []
-        for content in responses:
-            with_indices.append((counter, content))
-            counter += 1
-        for counter, content in with_indices:
+        for counter, content in enumerate(responses):
             save_to_file(url, counter, content)

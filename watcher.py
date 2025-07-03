@@ -31,6 +31,8 @@ class Watcher:
 
     def __print_progress(self):
         cls()
+        # todo - you can avoid flickering on the console by creating the whole string first
+        # and then printing it at once
         elapsed = time.time() - self.start
         print(f"Scraping progress (elapsed time: {elapsed:.2f} seconds):")
         for url, count in self.counter.items():

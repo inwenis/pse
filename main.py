@@ -51,4 +51,6 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
     for url, responses in results:
         print(f'got {len(responses)} results for {url}')
         for counter, content in enumerate(responses):
+            # todo - saving will fail if there is no 'out' directory
+            # sving to files could be handled in a separate class called FileSaver/Dumper/etc
             save_to_file(url, counter, content)

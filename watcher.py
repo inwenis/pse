@@ -3,6 +3,7 @@
 
 import os
 import threading
+import time
 
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
@@ -11,8 +12,11 @@ class Watcher:
     def __init__(self, urls):
         self.counter = {url: 0 for url in urls}
         self.lock = threading.Lock()
+        self.start = None
 
     def report_scraped(self, url):
+        if self.start is None:
+            self.start = time.time()
         # because scraping a single url is sequential we can safely increment the counter
         # without worrying about thread safety
         self.counter[url] += 1
@@ -20,13 +24,15 @@ class Watcher:
         # so we print it only if no other thread is currently printing
         if not self.lock.locked():
             with self.lock:
-                self.print_progress()
+                self.__print_progress()
 
     def report_scraped_all(self, url):
         self.counter[url] *= -1 # multiply by -1 to indicate that all files for this URL have been scraped
 
-    def print_progress(self):
+    def __print_progress(self):
         cls()
+        elapsed = time.time() - self.start
+        print(f"Scraping progress (elapsed time: {elapsed:.2f} seconds):")
         for url, count in self.counter.items():
             if count >= 0:
                 print(f"{url.ljust(60)}: {count:>5} files scraped")

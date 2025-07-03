@@ -14,12 +14,12 @@ def save_to_file(url, counter, content):
 # if necessary not you could automate getting all endpoints from the main page
 # since we have code working for a hardcoded list of endpoints
 urls = [
-    # 'https://api.raporty.pse.pl/api/ogr-oper',
+    'https://api.raporty.pse.pl/api/ogr-oper',
     'https://api.raporty.pse.pl/api/ogr-oper-head',
-    # 'https://api.raporty.pse.pl/api/it-omb-rbb',
-    # 'https://api.raporty.pse.pl/api/price-fcst',
-    # 'https://api.raporty.pse.pl/api/price-cost',
-    # 'https://api.raporty.pse.pl/api/pk5l-wp',
+    'https://api.raporty.pse.pl/api/it-omb-rbb',
+    'https://api.raporty.pse.pl/api/price-fcst',
+    'https://api.raporty.pse.pl/api/price-cost',
+    'https://api.raporty.pse.pl/api/pk5l-wp',
     'https://api.raporty.pse.pl/api/unav-pk5l'
 ]
 

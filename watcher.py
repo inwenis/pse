@@ -29,6 +29,6 @@ class Watcher:
         cls()
         for url, count in self.counter.items():
             if count >= 0:
-                print(f"{url.ljust(60)}: {count} files scraped")
+                print(f"{url.ljust(60)}: {count:>5} files scraped")
             else:
-                print(f"{url.ljust(60)}: {-count} files scraped (all done)")
+                print(f"{url.ljust(60)}: {-count:>5} files scraped (all done)")

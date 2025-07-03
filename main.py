@@ -38,8 +38,9 @@ import concurrent.futures
 
 def fetch_and_print(url):
     print(f"Fetching data from {url}")
-    fetch_all(url)
+    data = fetch_all(url)
     print("Done fetching data.")
+    return data
 
 def save_to_file(url, counter, content):
     endpoint = url.split('/')[-1]
@@ -54,7 +55,7 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
         counter = 0
         with_indices = []
         for content in responses:
-            with_indices.append(counter, content)
+            with_indices.append((counter, content))
             counter += 1
         for counter, content in with_indices:
             save_to_file(url, counter, content)

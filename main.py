@@ -1,3 +1,5 @@
+# scrapes data from https://api.raporty.pse.pl/app/home
+
 import requests
 import re
 import os

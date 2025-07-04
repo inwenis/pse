@@ -35,7 +35,7 @@ def fetch_all(url):
     watcher.report_scraped_all(url)
     return url, all
 
-# I know little of parallel/concurency in python so I'm not sure if this is the way to go
+# I know little of parallel/concurrency in python so I'm not sure if this is the way to go
 # but it works
 with concurrent.futures.ThreadPoolExecutor() as executor:
     results = executor.map(fetch_all, urls)
@@ -43,5 +43,5 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
         print(f'got {len(responses)} results for {url}')
         for counter, content in enumerate(responses):
             # todo - saving will fail if there is no 'out' directory
-            # sving to files could be handled in a separate class called FileSaver/Dumper/etc
+            # saving to files could be handled in a separate class called FileSaver/Dumper/etc
             save_to_file(url, counter, content)

@@ -12,7 +12,7 @@ def fix_pagination_link(to_fix, full_endpoint_url):
 
 def save_to_file(url, counter, content):
     endpoint = url.split('/')[-1]
-    with open(f'out/{endpoint}_{counter}.json', 'w', encoding='utf-8') as f:
+    with open(f'out/{endpoint}_{str(counter).zfill(3)}.json', 'w', encoding='utf-8') as f:
         f.write(content)
 
 # I don't like using a global watcher

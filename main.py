@@ -24,19 +24,26 @@ def fetch_all(url):
 
     current_link = url
 
-    while True:
-        response = requests.get(current_link)
-        watcher.report_scraped(url)
-        all.append(response.text)
-        parsed = response.json()
-        if 'nextLink' not in parsed:
-            break
-        else:
-            current_link = fix_pagination_link(parsed['nextLink'], url)
-    # todo - fix bug - it seems some urls are never marked as done
-    # i suspect it is because the watcher is not fully thread-safe
-    watcher.report_scraped_all(url)
-    return url, all
+    try:
+        while True:
+            response = requests.get(current_link, timeout=2)
+            watcher.report_scraped(url)
+            all.append(response.text)
+            parsed = response.json()
+            if 'nextLink' not in parsed:
+                break
+            else:
+                current_link = fix_pagination_link(parsed['nextLink'], url)
+        # todo - fix bug - it seems some urls are never marked as done
+        # i suspect it is because the watcher is not fully thread-safe
+        watcher.report_scraped_all(url)
+        return url, all
+    except Exception:
+        # temporarily swallow all exceptions so the scraper doesn't crash when one url fails
+        # todo - handle exceptions properly, e.g. log them
+        # todo - add retires and use exponential backoff and
+        watcher.report_scraped_all(url)
+        return url, all
 
 os.makedirs('out', exist_ok=True) # Ensure the output directory exists before saving files
 

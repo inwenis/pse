@@ -30,13 +30,12 @@ class Watcher:
         self.counter[url] *= -1 # multiply by -1 to indicate that all files for this URL have been scraped
 
     def __print_progress(self):
-        cls()
-        # todo - you can avoid flickering on the console by creating the whole string first
-        # and then printing it at once
         elapsed = time.time() - self.start
-        print(f"Scraping progress (elapsed time: {elapsed:.2f} seconds):")
+        msg = f"Scraping progress (elapsed time: {elapsed:.2f} seconds):\n"
         for url, count in self.counter.items():
             if count >= 0:
-                print(f"{url.ljust(60)}: {count:>5} files scraped")
+                msg += f"{url.ljust(60)}: {count:>5} files scraped\n"
             else:
-                print(f"{url.ljust(60)}: {-count:>5} files scraped (all done)")
+                msg += f"{url.ljust(60)}: {-count:>5} files scraped (all done)\n"
+        cls()
+        print(msg)

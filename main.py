@@ -1,5 +1,6 @@
 import requests
 import re
+import os
 import concurrent.futures
 import watcher
 from urls import urls
@@ -35,9 +36,11 @@ def fetch_all(url):
     watcher.report_scraped_all(url)
     return url, all
 
+os.makedirs('out', exist_ok=True) # Ensure the output directory exists before saving files
+
 # I know little of parallel/concurrency in python so I'm not sure if this is the way to go
 # but it works
-with concurrent.futures.ThreadPoolExecutor() as executor:
+with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
     results = executor.map(fetch_all, urls)
     for url, responses in results:
         print(f'got {len(responses)} results for {url}')

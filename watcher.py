@@ -20,16 +20,13 @@ class Watcher:
         # because scraping a single url is sequential we can safely increment the counter
         # without worrying about thread safety
         self.counter[url] += 1
-        # we don't need to print progress every time a file is scraped
-        # so we print it only if no other thread is currently printing
-        if not self.lock.locked():
-            with self.lock:
-                self.__print_progress()
+        self.__print_progress()
 
     def report_scraped_all(self, url):
         self.counter[url] *= -1 # multiply by -1 to indicate that all files for this URL have been scraped
+        self.__print_progress()
 
-    def __print_progress(self):
+    def __print_progress_locked(self):
         elapsed = time.time() - self.start
         msg = f"Scraping progress (elapsed time: {elapsed:.2f} seconds):\n"
         for url, count in self.counter.items():
@@ -39,3 +36,10 @@ class Watcher:
                 msg += f"{url.ljust(60)}: {-count:>5} files scraped (all done)\n"
         cls()
         print(msg)
+
+    def __print_progress(self):
+        # we don't need to print progress every time a file is scraped
+        # so we print it only if no other thread is currently printing
+        if not self.lock.locked():
+            with self.lock:
+                self.__print_progress_locked()

@@ -23,6 +23,7 @@ class Watcher:
         self.__print_progress()
 
     def report_scraped_all(self, url):
+        # todo - when there are 0 files for a URL we can not multiply by -1 - we should store "all done" separately - in a tuple maybe?
         self.counter[url] *= -1 # multiply by -1 to indicate that all files for this URL have been scraped
         self.__print_progress()
 

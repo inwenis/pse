@@ -1,4 +1,5 @@
-# scrapes data from https://api.raporty.pse.pl/app/home
+# scrapes all endpoints from https://api.raporty.pse.pl/app/home and saves responses to out/*[C].json
+# GUI for data - https://raporty.pse.pl/
 
 import requests
 import re

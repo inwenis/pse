@@ -5,7 +5,6 @@ Data is saved to `out/*[C].json`
 GUI for scraped data - https://raporty.pse.pl/
 
 # TODOs
-- add timeout for http requests
 - add retires for http requests
 - to enable more "parallelism" we can use dates to page through all available data instead of relying on pagination provided by `nextLink`
 - add logging

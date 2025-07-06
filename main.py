@@ -27,7 +27,8 @@ def fetch_all(url):
 
     try:
         while True:
-            response = requests.get(current_link)
+            # timeout of 20 seconds is chosen arbitrarily to scrape most data and avoid getting blocked
+            response = requests.get(current_link, timeout=20)
             watcher.report_scraped(url)
             all.append(response.text)
             parsed = response.json()

@@ -11,3 +11,12 @@ GUI for scraped data - https://raporty.pse.pl/
 - add logging
 - `watcher.py` clears the console so it will not work when we move to logging
 - make it react to `Ctrl+C`
+
+# How to run it?
+
+```
+python -m venv env
+.\env\Scripts\Activate.ps1
+pip install -r requirements.txt
+python main.py
+```
